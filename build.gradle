@@ -32,4 +32,14 @@ publishing {
             }
         }
     }
+
+    publications {
+        gpr(MavenPublication) {
+            groupId = 'school.mjc'
+            artifactId = 'parser.shared'
+            version = '0.1-SNAPSHOT'
+
+            from(components.java)
+        }
+    }
 }
