@@ -1,0 +1,6 @@
+public class Code {
+
+    void method() {
+        int a = ((((1 + 2))));
+    }
+}

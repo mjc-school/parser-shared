@@ -1,0 +1,8 @@
+public class Code {
+
+    void method() {
+        class Another {
+
+        }
+    }
+}

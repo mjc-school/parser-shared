@@ -1,10 +1,11 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'jacoco'
 }
 
 group 'com.github.mjc-school'
-version '1.0.2-SNAPSHOT'
+version '1.0.3-SNAPSHOT'
 
 compileJava {
     sourceCompatibility = '17'
@@ -19,6 +20,7 @@ dependencies {
     implementation group: 'com.github.javaparser', name: 'javaparser-core', version: '3.25.1'
 
     implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
@@ -29,6 +31,13 @@ test {
 java {
     withSourcesJar()
     withJavadocJar()
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }
 
 publishing {
