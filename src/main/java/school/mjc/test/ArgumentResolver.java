@@ -6,9 +6,6 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import java.io.File;
-import java.io.InputStream;
-
 import static school.mjc.parser.Util.parse;
 
 public class ArgumentResolver implements ParameterResolver {

@@ -1,0 +1,4 @@
+public class Code {
+    public static void main(String arg1, String arg2) {
+    }
+}

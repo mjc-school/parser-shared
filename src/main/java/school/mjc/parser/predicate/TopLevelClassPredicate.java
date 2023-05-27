@@ -15,8 +15,8 @@ public class TopLevelClassPredicate implements Predicate<ClassOrInterfaceDeclara
     @Override
     public boolean test(ClassOrInterfaceDeclaration n) {
         return !n.isInterface() &&
-                n.getName().getIdentifier().equals(name) &&
                 !n.isLocalClassDeclaration() &&
-                !n.isInnerClass();
+                !n.isInnerClass() &&
+                n.getName().getIdentifier().equals(name);
     }
 }

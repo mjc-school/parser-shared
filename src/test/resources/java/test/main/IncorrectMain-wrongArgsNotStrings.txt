@@ -1,0 +1,4 @@
+public class Code {
+    public static void main(Integer[] args) {
+    }
+}
