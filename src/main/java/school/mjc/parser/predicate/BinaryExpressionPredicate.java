@@ -4,9 +4,20 @@ import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.EnclosedExpr;
 import com.github.javaparser.ast.expr.Expression;
 
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class BinaryExpressionPredicate implements Predicate<Expression> {
+
+    // Equals and not equals not included for now, can be changed later
+    private static final Set<BinaryExpr.Operator> COMMUTATIVE_OPERATORS = EnumSet.of(
+        BinaryExpr.Operator.BINARY_OR,
+        BinaryExpr.Operator.BINARY_AND,
+        BinaryExpr.Operator.XOR,
+        BinaryExpr.Operator.PLUS,
+        BinaryExpr.Operator.MULTIPLY
+    );
 
     private final BinaryExpr.Operator operator;
     private final Predicate<Expression> left;
@@ -39,7 +50,10 @@ public class BinaryExpressionPredicate implements Predicate<Expression> {
         if (!expression.isBinaryExpr()) {
             return false;
         }
-        BinaryExpr binaryExpr = expression.asBinaryExpr();
+        return checkBinaryExpression(expression.asBinaryExpr());
+    }
+
+    public boolean checkBinaryExpression(BinaryExpr binaryExpr) {
         if (binaryExpr.getOperator() != operator) {
             return false;
         }
@@ -47,7 +61,7 @@ public class BinaryExpressionPredicate implements Predicate<Expression> {
     }
 
     private boolean checkOperands(BinaryExpr binaryExpr) {
-        if (strict) {
+        if (strict || !COMMUTATIVE_OPERATORS.contains(operator)) {
             return left.test(binaryExpr.getLeft()) && right.test(binaryExpr.getRight());
         } else {
             return (left.test(binaryExpr.getLeft()) && right.test(binaryExpr.getRight())) ||

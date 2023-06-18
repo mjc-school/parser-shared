@@ -25,6 +25,10 @@ public class Dsl {
             expression.asNameExpr().getName().getIdentifier().equals(name);
     }
 
+    public static VariableDeclarationPredicate declaration() {
+        return declaration(null);
+    }
+
     public static VariableDeclarationPredicate declaration(String name) {
         return new VariableDeclarationPredicate(name);
     }

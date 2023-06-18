@@ -21,9 +21,14 @@ public class VariableDeclarationPredicate implements Predicate<VariableDeclarato
 
     @Override
     public boolean test(VariableDeclarator variableDeclarator) {
-        return variableDeclarator.getName().getIdentifier().equals(name) &&
+        return testName(variableDeclarator) &&
             typePredicate.test(variableDeclarator.getType()) &&
             initializerPredicate.test(variableDeclarator.getInitializer());
+    }
+
+    private boolean testName(VariableDeclarator variableDeclarator) {
+        return name == null ||
+            variableDeclarator.getName().getIdentifier().equals(name);
     }
 
     public VariableDeclarationPredicate withInitializer(Predicate<Expression> predicate) {
@@ -45,5 +50,4 @@ public class VariableDeclarationPredicate implements Predicate<VariableDeclarato
         this.typePredicate = typePredicate;
         return this;
     }
-
 }
