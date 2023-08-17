@@ -15,6 +15,24 @@ public class Dsl {
             expression.asIntegerLiteralExpr().getValue().equals(number.toString());
     }
 
+    public static Predicate<Expression> doubleLiteral(Double number) {
+        return expression -> expression.isDoubleLiteralExpr() &&
+                Double.valueOf(expression.asDoubleLiteralExpr().getValue()).equals(number);
+    }
+
+    public static Predicate<Expression> longLiteral(Long number) {
+        return expression -> {
+            if (!expression.isLongLiteralExpr()) {
+                return false;
+            }
+            String stringValue = expression.asLongLiteralExpr().getValue();
+            if (stringValue.toUpperCase().endsWith("L")) {
+                stringValue = stringValue.substring(0, stringValue.length() - 1);
+            }
+            return number == Long.parseLong(stringValue);
+        };
+    }
+
     public static Predicate<Expression> stringLiteral(String text) {
         return expression -> expression.isStringLiteralExpr() &&
             expression.asStringLiteralExpr().getValue().equals(text);
@@ -23,6 +41,10 @@ public class Dsl {
     public static Predicate<Expression> variableRef(String name) {
         return expression -> expression.isNameExpr() &&
             expression.asNameExpr().getName().getIdentifier().equals(name);
+    }
+
+    public static Predicate<Expression> anyVariableRef() {
+        return Expression::isNameExpr;
     }
 
     public static VariableDeclarationPredicate declaration() {
