@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,18 +42,27 @@ public class BaseIOTest {
                 .replaceAll("(\n\r)|(\r\n)|(\r)", "\n");
     }
 
-    protected List<String> getInput() {
+    protected List<String> getOutput() {
         return Arrays.asList(outContent.toString(StandardCharsets.UTF_8).split("(\n\r)|(\r\n)|\r|\n"));
     }
 
     protected void assertOutput(String... expected) {
-        assertEquals(Arrays.asList(expected), getInput(),
-                "Program output didn't match expected");
+        assertOutput(output -> "Program output didn't match expected", expected);
+    }
+
+    protected void assertOutput(Function<List<String>, String> errorMessageFunction, String... expected) {
+        List<String> output = getOutput();
+        assertEquals(Arrays.asList(expected), output,
+            () -> errorMessageFunction.apply(output));
     }
 
     protected void assertOutputIgnoreLineDelimiters(String expected) {
-        assertEquals(expected, String.join("", getInput()),
-            "Program output didn't match expected");
+        assertOutputIgnoreLineDelimiters(actualInput -> "Program output didn't match expected", expected);
     }
 
+
+    protected void assertOutputIgnoreLineDelimiters(Function<String, String> errorMessageFunction, String expected) {
+        String actualOutput = String.join("", getOutput());
+        assertEquals(expected, actualOutput, () -> errorMessageFunction.apply(actualOutput));
+    }
 }
