@@ -36,7 +36,7 @@ jobs:
         with:
           gradle-version: "7.4"
       - name: Build with Gradle
-        run: gradle build -Dsigning.keyId=${{ secrets.PGP_KEY_ID }} -Dsigning.password=${{ secrets.PGP_PASSWORD }} -Dsigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
+        run: gradle build -Psigning.keyId=${{ secrets.PGP_KEY_ID }} -Psigning.password=${{ secrets.PGP_PASSWORD }} -Psigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
 
       - name: Publish
         run: gradle publish
