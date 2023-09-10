@@ -1,11 +1,13 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'signing'
     id 'jacoco'
 }
 
-group 'com.github.mjc-school'
-version '1.0.4-SNAPSHOT'
+group 'school.mjc'
+archivesBaseName = "code-verifier"
+version '1.0.0'
 
 compileJava {
     sourceCompatibility = '17'
@@ -40,10 +42,33 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
 }
 
+tasks.javadocJar {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+tasks.sourcesJar {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
 publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
         }
     }
 }
