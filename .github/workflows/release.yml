@@ -36,10 +36,10 @@ jobs:
         with:
           gradle-version: "7.4"
       - name: Build with Gradle
-        run: gradle build -dsigning.keyId=${{ secrets.PGP_KEY_ID }} -dsigning.password=${{ secrets.PGP_PASSWORD }} -dsigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
+        run: gradle build -Dsigning.keyId=${{ secrets.PGP_KEY_ID }} -Dsigning.password=${{ secrets.PGP_PASSWORD }} -Dsigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
 
       - name: Publish
-        run: gradle build -dsigning.keyId=${{ secrets.PGP_KEY_ID }} -dsigning.password=${{ secrets.PGP_PASSWORD }} -dsigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
+        run: gradle publish
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_SECRET }}
