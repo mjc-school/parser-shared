@@ -35,11 +35,8 @@ jobs:
         id: setup-gradle
         with:
           gradle-version: "7.4"
-      - name: Build with Gradle
-        run: gradle build -Psigning.keyId=${{ secrets.PGP_KEY_ID }} -Psigning.password=${{ secrets.PGP_PASSWORD }} -Psigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
-
-      - name: Publish
-        run: gradle publish
+      - name: Build & publish with Gradle
+        run: gradle build publishAllPublicationsToOSSRHRepository -Psigning.keyId=${{ secrets.PGP_KEY_ID }} -Psigning.password=${{ secrets.PGP_PASSWORD }} -Psigning.secretKeyRingFile="/tmp/pgp_private_key.kbx"
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_SECRET }}
