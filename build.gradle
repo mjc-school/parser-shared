@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'school.mjc'
-archivesBaseName = "code-verifier"
+archivesBaseName = "parser-shared"
 version '1.0.0'
 
 compileJava {
@@ -53,14 +53,38 @@ tasks.sourcesJar {
 }
 
 artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
+    archives javadocJar, sourcesJar, publishing.publications
 }
 
 publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'Parser-shared'
+                description = "A util library used to verify students' submitted code"
+                url = 'https://mjc.school/'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'danilaVaratyntsev'
+                        name = 'Danila Varatyntsev'
+                        email = 'danilaVaratyntsev@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git://github.com/mjc-school/parser-shared.git'
+                    url = 'https://github.com/mjc-school/parser-shared'
+                }
+            }
+        }
+    }
     repositories {
         maven {
             name = "OSSRH"
@@ -71,4 +95,8 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
